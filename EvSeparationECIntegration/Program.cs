@@ -7,12 +7,12 @@ namespace EvSeparationECIntegration
 {
     internal class Program
     {
-        
+
         static void Main(string[] args)
-		{
-			RunAndNotify("atos");
-			RunAndNotify("eviden");
-		}
+        {
+            RunAndNotify("atos");
+            RunAndNotify("eviden");
+        }
 
         static void RunAndNotify(string companyArea)
         {
@@ -133,8 +133,7 @@ namespace EvSeparationECIntegration
         }
 
 
-
-        /*
+		/*
          //NotifyStatus("Atos", new Guid("489C8430-E3D3-43C7-9673-CC833E080210"));
 		  // TESTING DATE
 		static void Main(string[] args)
@@ -150,54 +149,50 @@ namespace EvSeparationECIntegration
 		}
 		
 		 
+		 //TESTING Multiple EmailID's
+		static void Main(string[] args)
+		{
+			string print = "";
+			try
+			{
+				using (var client = new SmtpClient("10.92.32.13", 25))
+				{
+					var mailMessage = new MailMessage
+					{
+						From = new MailAddress("ITAP.TECH.EXTERNAL@ATOS.NET"),
+						Subject = "Test Email",
+						Body = "Test Email Body",
+						IsBodyHtml = true
+					};
+					string toEmail = "shraddha.pawar@atos.net,shardul.mahajan@atos.net";
+					foreach (var email in toEmail.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+					{
+						print += " " + email;
+						mailMessage.To.Add(email.Trim());
+					}
+					string ccEmail = "shraddha.pawar@atos.net,shardul.mahajan@atos.net";
+					print += " cc ";
+					if (!string.IsNullOrEmpty(ccEmail))
+					{
+						foreach (var email in ccEmail.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+						{
+							print += " " + email;
+							mailMessage.CC.Add(email.Trim());
+						}
+					}
+					client.Send(mailMessage);
+				}
+			}
+			catch (SmtpException ex)
+			{
+				print += " Error: " + ex.Message;
+			}
+			DatabaseHelper.LogSeparationECStatusFile("Atos", print);
+		}
+
 		 
-		 
 
-        //TESTING Multiple EmailID's
-        static void Main(string[] args)
-        {
-            string print = "";
-            try
-            {
-                
-                using (var client = new SmtpClient("10.92.32.13", 25))
-                {
-                    var mailMessage = new MailMessage
-                    {
-                        From = new MailAddress("ai.itap@atos.net"),
-                        Subject = "Test Email",
-                        Body = "Test Email Body",
-                        IsBodyHtml = true
-                    };
-                    string toEmail = "shraddha.pawar@atos.net;shardul.mahajan@atos.net";
-                    foreach (var email in toEmail.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries))
-                    {
-                        print += " " + email;
-                        mailMessage.To.Add(email.Trim());
-                    }
-                    string ccEmail = "shraddha.pawar@atos.net;shardul.mahajan@atos.net;shalini.johnson@atos.net";
-                    print += " cc " ;
-                    if (!string.IsNullOrEmpty(ccEmail))
-                    {
-                        foreach (var email in ccEmail.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries))
-                        {
-                            print += " " + email;
-                            mailMessage.CC.Add(email.Trim());
-                        }
-                    }
-                    client.Send(mailMessage);
-
-                    
-                    
-
-                }
-            }
-            catch (SmtpException ex)
-            {
-                print += " Error: " + ex.Message;
-            }
-            DatabaseHelper.LogSeparationECStatusFile("Atos", print);
-        }
+        
         */
-    }
+	}
 }

@@ -39,14 +39,14 @@ internal static class EmailService
 
 
                 //mailMessage.To.Add(toEmail.Trim()); For single email ID for multiple use below
-                foreach (var email in toEmail.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries))
+                foreach (var email in toEmail.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
                 {
                     mailMessage.To.Add(email.Trim());
                 }
 
                 if (!string.IsNullOrEmpty(ccEmail))
 				{
-                    foreach (var email in ccEmail.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries))
+                    foreach (var email in ccEmail.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
                     {
                         mailMessage.CC.Add(email.Trim());
                     }
@@ -101,11 +101,20 @@ internal static class EmailService
                 };
 
 
-                mailMessage.To.Add(toEmail);
-                if (!string.IsNullOrEmpty(ccEmail))
-                    mailMessage.CC.Add(ccEmail);
+				//mailMessage.To.Add(toEmail);For single email ID for multiple use below
+				foreach (var email in toEmail.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+				{
+					mailMessage.To.Add(email.Trim());
+				}
+				if (!string.IsNullOrEmpty(ccEmail))
+				{
+					foreach (var email in ccEmail.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+					{
+						mailMessage.CC.Add(email.Trim());
+					}
+				}
 
-                client.Send(mailMessage);
+				client.Send(mailMessage);
 
                 DatabaseHelper.AddAPIEmailLog(companyArea, fromEmail, toEmail, ccEmail, subject, body, true, "","HR");
                 return true;
